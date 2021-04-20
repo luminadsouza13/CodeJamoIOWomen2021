@@ -1,0 +1,39 @@
+Problem
+Aroha is a big animal lover, so she spends some free time taking care of many of her loved ones' pets. She likes to offer them treats, but wants to do that in an impartial way.
+
+Aroha decided that it was logical for pets of the same size to get the same amount of treats and for larger pets to get strictly more treats than smaller ones. For example, if she has 4 pets with her of sizes 10,20,10, and 25, she could offer 2 treats to each pet of size 10, 3 treats to the pet of size 20, and 5 treats to the pet of size 25. This requires her to buy a total of 2+3+2+5=12 treats. However, she can offer treats to all 4 pets and comply with her own rules with a total of just 7 treats by offering 1 each to the pets of size 10, 2 to the pet of size 20, and 3 to the pet of size 25.
+
+Help Aroha plan her next pet day. Given the sizes of all pets that will accompany her, compute the minimum number of treats she needs to buy to be able to offer at least one treat to all pets while complying with her impartiality rules.
+
+Input
+The first line of the input gives the number of test cases, T. T test cases follow. Each test case consists of two lines. The first line of a test case contains a single integer N, the number of pets in Aroha's next pet day. The second line of a test case contains N integers S1,S2,…,SN, representing the sizes of each pet.
+
+Output
+For each test case, output one line containing Case #x: y, where x is the test case number (starting from 1) and y is the minimum number of treats she needs to buy to be able to offer at least one treat to all pets while complying with her impartiality rules.
+
+Limits
+Time limit: 10 seconds.
+Memory limit: 1 GB.
+1≤T≤100.
+1≤Si≤100, for all i.
+
+Test Set 1 (Visible Verdict)
+2≤N≤5.
+
+Test Set 2 (Visible Verdict)
+2≤N≤100.
+
+-------------------------------Analysis 
+One observation that helps us find a solution is: we will never need to give any pet more than N treats. So for each pet, we need to consider at most N options for treats, 1,2,…,N. We can quickly verify that this observation is true with a simple argument. If there is a positive integer X such that no pet receives X and some pets receive X+1, then we can give all those pets X instead, keep everything valid and reduce the total amount of treats.
+
+For Test Set 1, limits are small enough for a brute force solution. For each pet, we can try all the numbers (1,2,…,N) of treats, and check if that assignment fulfills our criteria. Then we output the minimum total from among the valid assignments. There are NN possible assignments. For each assignment, we can check the validity criteria by checking that all pairs of pets satisfy the impartiality rule in O(N2) time. This makes the overall time complexity O(NN+2), which is sufficient for Test Set 1.
+
+For Test Set 2, we need to find the solution faster.
+
+All pets of the same size must get the same amount of treats, and any pet must get strictly more treats than all pets strictly smaller than it. That means that if we sort the pets by size (in non-decreasing order), the number of treats each pet must get is also sorted. Since we need to minimize the number of treats, we can start by giving 1 treat to the smallest animal. Then, for every animal in the sorted list, we can give it:
+
+the same number of treats as the previous one, if it is the same size as the previous one.
+1 more treat than the previous one, if it is bigger.
+By distributing treats like this, we are keeping the invariant that the assignment is optimal for the set of pets that have already received treats. When considering the next pet, we are giving the minimum amount possible. Therefore, we are giving the minimum number of treats whilst also fulfilling the condition.
+
+The sorting of the pets takes O(NlogN) time, and the assigning of the treats can be done in O(N) time. This makes the overall time complexity O(NlogN), which is sufficient to pass Test Set 2.
